@@ -1,11 +1,52 @@
 {
   "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
+    {
+      "body": "It's not poisonous...",
+      "author": "Famous Last Words",
+      "id": "1efacd74-9805-6cf0-a66c-878379641114"
+    },
+    {
+      "id": "1efacd7b-3249-6540-910d-fd6d94bb065e",
+      "body": "For whoever is lonely there is a tavern.",
+      "author": "Georg Trakl"
+    },
+    {
+      "id": "1efacd7b-701c-6f70-b7cc-9279ad915fea",
+      "body": "Nature abhors a vacuum.",
+      "author": "Francois Rabelais"
+    },
+    {
+      "id": "1efacd81-044c-6330-bf6b-3b673804202f",
+      "body": "The telephone is a good way to talk to people without having to offer them a drink.",
+      "author": "Fran Lebowitz"
+    },
+    {
+      "id": "1efacd82-3b73-6f60-952a-7939451f3371",
+      "body": "If your heart is a volcano, how shall you expect flowers to bloom?",
+      "author": "Kahlil Gibran"
+    },
+    {
+      "id": "1efacd92-1c71-62b0-b46e-32057b3bace0",
+      "body": "Adversity's sweet milk, philosophy.",
+      "author": "William Shakespeare"
+    },
+    {
+      "id": "1efacd92-460d-6060-b971-9384ccd43231",
+      "body": "One cannot collect all the beautiful shells on the beach.",
+      "author": "Anne Morrow Lindbergh"
+    }
   ],
   "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
   ],
   "profile": {
     "name": "typicode"
