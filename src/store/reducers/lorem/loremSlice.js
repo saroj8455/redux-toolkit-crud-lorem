@@ -3,8 +3,8 @@ import axios from 'axios';
 
 export const getLorems = createAsyncThunk(
   'getLorems',
-  async (object, { getState, rejectWithValue }) => {
-    console.log(getState());
+  async (_, { getState, rejectWithValue }) => {
+    // console.log(getState());
 
     try {
       const { data } = await axios.get(
@@ -27,15 +27,16 @@ const loremSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getLorems.pending, (state) => {
-      state.loading = true;
-    }),
-      builder.addCase(getLorems.fulfilled, (state, { payload }) => {
+    builder
+      .addCase(getLorems.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getLorems.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.data = payload;
         state.isSuccess = true;
-      }),
-      builder.addCase(getLorems.rejected, (state, { payload }) => {
+      })
+      .addCase(getLorems.rejected, (state, { payload }) => {
         state.loading = false;
         state.isSuccess = false;
         state.message = 'failed.';

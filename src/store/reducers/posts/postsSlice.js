@@ -1,69 +1,68 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const postUrl = 'http://localhost:3000/posts';
+const postUrl = 'http://localhost:3000/posts';
 
 export const getPosts = createAsyncThunk(
-  'getPosts',
-  async (object, { getState, rejectWithValue }) => {
-    console.log(getState());
+  'posts/getPosts',
+  async (_, { getState, rejectWithValue }) => {
+    // console.log(getState());
     try {
       const { data } = await axios.get(postUrl);
       return data;
     } catch (error) {
-      rejectWithValue(error.response);
+      return rejectWithValue(error.response?.data || 'Unable to fetch posts');
     }
   }
 );
 
 export const createPost = createAsyncThunk(
-  'createPost',
+  'posts/createPost',
   async ({ newPost }, { getState, rejectWithValue }) => {
     try {
       const response = await axios.post(postUrl, newPost);
       return response.data;
     } catch (error) {
-      rejectWithValue(error.response);
+      return rejectWithValue(error.response?.data || 'Unable to create post');
     }
   }
 );
+const initialState = {
+  posts: [],
+  currentPost: null,
+  loading: false,
+  error: null,
+};
 
 const postsSlice = createSlice({
   name: 'posts',
-  initialState: {
-    posts: [],
-    post: null,
-    loading: false,
-    message: '',
-    isSuccess: false,
-  },
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // retrive posts
-    builder.addCase(getPosts.pending, (state) => {
-      state.loading = true;
-    }),
-      builder.addCase(getPosts.fulfilled, (state, { payload }) => {
+    builder
+      // retrive posts
+      .addCase(getPosts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPosts.fulfilled, (state, { payload }) => {
         state.posts = payload;
         state.loading = false;
-        state.isSuccess = true;
-      }),
-      builder.addCase(getPosts.rejected, (state) => {
+      })
+      .addCase(getPosts.rejected, (state, { payload }) => {
         state.loading = false;
-        state.message = 'Unable to fetch posts.';
-      }),
+        state.error = payload || 'Unable to fetch posts.';
+      })
       // create post
-      builder.addCase(createPost.pending, (state) => {
+      .addCase(createPost.pending, (state) => {
         state.loading = true;
-      }),
-      builder.addCase(createPost.fulfilled, (state, { payload }) => {
-        state.post = payload;
+      })
+      .addCase(createPost.fulfilled, (state, { payload }) => {
+        state.currentPost = payload;
         state.loading = false;
-        state.isSuccess = true;
-      }),
-      builder.addCase(createPost.rejected, (state) => {
+      })
+      .addCase(createPost.rejected, (state, { payload }) => {
         state.loading = false;
-        state.message = 'Unable to create posts.';
+        state.error = payload || 'Unable to create posts.';
       });
   },
 });

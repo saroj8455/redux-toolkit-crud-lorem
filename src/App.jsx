@@ -12,6 +12,7 @@ import { createPost, getPosts } from './store/reducers/posts/postsSlice';
 import { Button } from 'primereact/button';
 import randomQuotes from 'random-quotes';
 import { v6 as uuidv6 } from 'uuid';
+import Posts from './components/Posts';
 
 function App() {
   const lorem = useSelector((state) => state.lorem);
@@ -28,18 +29,24 @@ function App() {
     <>
       <Welcome />
       <Divider />
-      <Container>{JSON.stringify(lorem)}</Container>
-      <Divider />
+
       <Container>
-        <ul className='p-0 m-0'>
-          {posts.map((p, index) => (
-            <li key={index} className='mb-2 text-500'>
-              {p.body}
-            </li>
-          ))}
-        </ul>
+        <h3 className='mb-3 text-700 font-medium text-3xl'>
+          Generate paragraph from lorem api
+        </h3>
+        {lorem.data &&
+          lorem.data.map((paraText, index) => {
+            return (
+              <p key={index} className='text-800 mb-3'>
+                {paraText}
+              </p>
+            );
+          })}
       </Container>
+
       <Divider></Divider>
+      <Posts />
+      <Divider />
       <Container>
         <div className='card flex justify-content-center gap-3'>
           <Button
