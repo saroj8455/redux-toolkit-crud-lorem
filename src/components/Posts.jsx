@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import Container from './Container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPosts } from '../store/reducers/posts/postsSlice';
+import { createPost, getPosts } from '../store/reducers/posts/postsSlice';
+import { Button } from 'primereact/button';
+import randomQuotes from 'random-quotes';
+import { v6 as uuidv6 } from 'uuid';
 
 export default function Posts() {
   const { posts, loading, error } = useSelector((state) => state.posts);
@@ -9,6 +12,16 @@ export default function Posts() {
   useEffect(() => {
     dispatch(getPosts());
   }, [dispatch]);
+
+  const handelCreatePost = async () => {
+    try {
+      const newPost = { id: uuidv6(), ...randomQuotes() };
+      await dispatch(createPost({ newPost }));
+      dispatch(getPosts());
+    } catch (error) {
+      console.log('Error handling post creation...', error);
+    }
+  };
 
   return (
     <Container>
@@ -29,6 +42,11 @@ export default function Posts() {
             );
           })}
       </ul>
+      <Button
+        label='create random quotes'
+        icon='pi pi-check'
+        onClick={handelCreatePost}
+      />
     </Container>
   );
 }
