@@ -12,6 +12,7 @@ import {
   createPost,
   getByPostId,
   getPosts,
+  updatePost,
 } from './store/reducers/posts/postsSlice';
 import { Button } from 'primereact/button';
 import randomQuotes from 'random-quotes';
@@ -52,14 +53,29 @@ function App() {
       <Posts />
       <Divider />
       <Container>
-        <div className='card flex justify-content-center gap-3'>
+        <div className='card flex justify-content-center gap-3 mb-4'>
           <Button
-            label='Check'
+            label='Get by postId'
             icon='pi pi-check'
             onClick={async () => {
               const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
               const { payload } = await dispatch(getByPostId(postId));
               console.log(payload);
+            }}
+          />
+          <Button
+            label='Update by postId'
+            icon='pi pi-check'
+            onClick={async () => {
+              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
+              const newPost = randomQuotes();
+              console.log(newPost);
+
+              const { payload } = await dispatch(
+                updatePost({ postId, newPost })
+              );
+              console.log(payload);
+              dispatch(getPosts());
             }}
           />
           <Button
