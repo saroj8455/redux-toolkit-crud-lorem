@@ -8,7 +8,11 @@ import Container from './components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLorems } from './store/reducers/lorem/loremSlice';
 import { Divider } from 'primereact/divider';
-import { createPost, getPosts } from './store/reducers/posts/postsSlice';
+import {
+  createPost,
+  getByPostId,
+  getPosts,
+} from './store/reducers/posts/postsSlice';
 import { Button } from 'primereact/button';
 import randomQuotes from 'random-quotes';
 import { v6 as uuidv6 } from 'uuid';
@@ -52,9 +56,10 @@ function App() {
           <Button
             label='Check'
             icon='pi pi-check'
-            onClick={() => {
-              const newPost = { title: 'another title v2', views: 201 };
-              dispatch(createPost({ newPost }));
+            onClick={async () => {
+              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
+              const { payload } = await dispatch(getByPostId(postId));
+              console.log(payload);
             }}
           />
           <Button

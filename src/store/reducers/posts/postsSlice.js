@@ -16,6 +16,18 @@ export const getPosts = createAsyncThunk(
   }
 );
 
+export const getByPostId = createAsyncThunk(
+  'posts/Id',
+  async (postId, { getState, rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${postUrl}/${postId}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Unable to fetch post');
+    }
+  }
+);
+
 export const createPost = createAsyncThunk(
   'posts/createPost',
   async ({ newPost }, { getState, rejectWithValue }) => {
@@ -61,6 +73,18 @@ const postsSlice = createSlice({
         state.loading = false;
       })
       .addCase(createPost.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload || 'Unable to create posts.';
+      })
+      // getByPostId
+      .addCase(getByPostId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getByPostId.fulfilled, (state, { payload }) => {
+        state.currentPost = payload;
+        state.loading = false;
+      })
+      .addCase(getByPostId.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload || 'Unable to create posts.';
       });
