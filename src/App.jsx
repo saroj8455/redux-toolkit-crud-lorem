@@ -26,6 +26,40 @@ function App() {
 
   const dispatch = useDispatch();
 
+  const handelPostCreate = async () => {
+    try {
+      const newPost = { id: uuidv6(), ...randomQuotes() };
+      await dispatch(createPost({ newPost }));
+      dispatch(getPosts());
+    } catch (error) {
+      console.log('Error handling post creation...', error);
+    }
+  };
+
+  const handelPostUpdate = async () => {
+    const postId = '1efad203-5f4a-6940-ad1a-a7e9bc5f46dd';
+    const newPost = randomQuotes();
+    console.log(newPost);
+
+    const { payload } = await dispatch(updatePost({ postId, newPost }));
+    console.log(payload);
+    dispatch(getPosts());
+  };
+
+  const handelPostbyId = async () => {
+    const postId = '1efad203-5f4a-6940-ad1a-a7e9bc5f46dd';
+    const { payload } = await dispatch(getByPostId(postId));
+    console.log(payload);
+  };
+
+  const handelPostDelete = async () => {
+    const postId = '1efad203-5f4a-6940-ad1a-a7e9bc5f46dd';
+
+    const { payload } = await dispatch(deleteByPostId(postId));
+    console.log(payload);
+    dispatch(getPosts());
+  };
+
   useEffect(() => {
     dispatch(getLorems());
     dispatch(getPosts());
@@ -58,50 +92,22 @@ function App() {
           <Button
             label='Get by postId'
             icon='pi pi-check'
-            onClick={async () => {
-              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
-              const { payload } = await dispatch(getByPostId(postId));
-              console.log(payload);
-            }}
+            onClick={handelPostbyId}
           />
           <Button
             label='Update by postId'
             icon='pi pi-check'
-            onClick={async () => {
-              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
-              const newPost = randomQuotes();
-              console.log(newPost);
-
-              const { payload } = await dispatch(
-                updatePost({ postId, newPost })
-              );
-              console.log(payload);
-              dispatch(getPosts());
-            }}
+            onClick={handelPostUpdate}
           />
           <Button
             label='Delete by postId'
             icon='pi pi-check'
-            onClick={async () => {
-              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
-
-              const { payload } = await dispatch(deleteByPostId(postId));
-              console.log(payload);
-              dispatch(getPosts());
-            }}
+            onClick={handelPostDelete}
           />
           <Button
             label='random quotes'
             icon='pi pi-check'
-            onClick={async () => {
-              try {
-                const newPost = { id: uuidv6(), ...randomQuotes() };
-                await dispatch(createPost({ newPost }));
-                dispatch(getPosts());
-              } catch (error) {
-                console.log('Error handling post creation...', error);
-              }
-            }}
+            onClick={handelPostCreate}
           />
         </div>
       </Container>
