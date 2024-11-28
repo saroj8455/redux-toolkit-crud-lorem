@@ -10,6 +10,7 @@ import { getLorems } from './store/reducers/lorem/loremSlice';
 import { Divider } from 'primereact/divider';
 import {
   createPost,
+  deleteByPostId,
   getByPostId,
   getPosts,
   updatePost,
@@ -74,6 +75,17 @@ function App() {
               const { payload } = await dispatch(
                 updatePost({ postId, newPost })
               );
+              console.log(payload);
+              dispatch(getPosts());
+            }}
+          />
+          <Button
+            label='Delete by postId'
+            icon='pi pi-check'
+            onClick={async () => {
+              const postId = '1efacd81-044c-6330-bf6b-3b673804202f';
+
+              const { payload } = await dispatch(deleteByPostId(postId));
               console.log(payload);
               dispatch(getPosts());
             }}

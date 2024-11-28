@@ -27,6 +27,18 @@ export const getByPostId = createAsyncThunk(
     }
   }
 );
+export const deleteByPostId = createAsyncThunk(
+  'delete/posts/Id',
+  async (postId, { getState, rejectWithValue }) => {
+    try {
+      const { data } = await axios.delete(`${postUrl}/${postId}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || 'Unable to delete post');
+    }
+  }
+);
+
 export const updatePost = createAsyncThunk(
   'update/post/Id',
   async ({ postId, newPost }, { getState, rejectWithValue }) => {
@@ -109,7 +121,19 @@ const postsSlice = createSlice({
       })
       .addCase(updatePost.rejected, (state, { payload }) => {
         state.loading = false;
-        state.error = payload || 'Unable to create posts.';
+        state.error = payload || 'Unable to update post.';
+      })
+      // delete post
+      .addCase(deleteByPostId.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteByPostId.fulfilled, (state, { payload }) => {
+        state.currentPost = payload;
+        state.loading = false;
+      })
+      .addCase(deleteByPostId.rejected, (state, { payload }) => {
+        state.loading = false;
+        state.error = payload || 'Unable to delete post.';
       });
   },
 });
